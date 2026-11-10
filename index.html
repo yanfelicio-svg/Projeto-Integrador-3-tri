@@ -155,7 +155,6 @@
       <!-- Logo do Projeto Sol + Água -->
       <a href="#inicio" onclick="switchTab('inicio')" class="flex items-center gap-3 group focus:outline-none">
         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-solar-400 to-ocean-500 flex items-center justify-center text-slate-900 font-extrabold text-xl shadow-md group-hover:scale-105 transition-transform">
-          <i class="fa-solid fa-sun-plant-wilt text-solar-500"></i>
           ☀️
         </div>
         <div>
@@ -559,33 +558,37 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         
-        <!-- Recurso em Libras (Vídeo/Modal Preparado) -->
+        <!-- Recurso em Libras com Player do YouTube Integrado -->
         <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200 space-y-4">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-ocean-100 text-ocean-700 flex items-center justify-center text-xl font-bold">
               <i class="fa-solid fa-hands-asl-interpreting"></i>
             </div>
             <div>
-              <h2 class="text-xl font-bold text-slate-900">Conteúdo em Libras</h2>
+              <h2 class="text-xl font-bold text-slate-900">Vídeo Explicativo em Libras (YouTube)</h2>
               <p class="text-xs text-slate-500">Língua Brasileira de Sinais</p>
             </div>
           </div>
 
           <p class="text-sm text-slate-700 leading-relaxed">
-            Este site foi desenhado para ser 100% inclusivo para a comunidade surda. Além da integração com o VLibras oficial, disponibilizamos resumos em vídeo com tradução em Libras e legenda descritiva.
+            Este site foi desenhado para ser 100% inclusivo. Insira abaixo o link do vídeo gravado pela sua equipe no YouTube para exibição direta aos avaliadores:
           </p>
 
-          <!-- Mock Player de Vídeo em Libras -->
-          <div class="relative bg-slate-900 rounded-xl overflow-hidden aspect-video flex items-center justify-center border border-slate-700 text-center p-4">
-            <div class="space-y-3">
-              <i class="fa-solid fa-circle-play text-5xl text-solar-400 hover:scale-110 cursor-pointer transition"></i>
-              <p class="text-xs text-slate-300 font-semibold">Vídeo Educacional: Efeito Fotoelétrico em Libras (3:45)</p>
-              <span class="inline-block text-[10px] bg-slate-800 text-slate-400 px-2 py-1 rounded">Legendas CC disponíveis</span>
-            </div>
+          <!-- Container Responsivo do Vídeo do YouTube -->
+          <div class="relative w-full aspect-video rounded-xl overflow-hidden shadow-md bg-slate-900 border border-slate-700">
+            <!-- COLOQUE O CÓDIGO DO SEU VÍDEO DO YOUTUBE NO ATRIBUTO src ABAIXO -->
+            <iframe 
+              class="w-full h-full" 
+              src="https://www.youtube.com/embed/SEU_CODIGO_DO_VIDEO" 
+              title="Vídeo Explicativo em Libras" 
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              allowfullscreen>
+            </iframe>
           </div>
 
           <div class="bg-slate-50 p-3 rounded-lg text-xs text-slate-600">
-            <strong>Transcrição Acessível:</strong> "Fótons solares batem no painel de silício. Se a energia da frequência for alta, libera elétrons para mover a bomba da piscina..."
+            <strong>Dica:</strong> Substitua <code>SEU_CODIGO_DO_VIDEO</code> no código fonte pelo ID do seu vídeo no YouTube (ex: se o link for <code>youtube.com/watch?v=dQw4w9WgXcQ</code>, cole <code>dQw4w9WgXcQ</code>).
           </div>
         </div>
 
