@@ -54,7 +54,7 @@
 
   <!-- Acessibilidade / Barra Superior de Atalhos -->
   <div class="bg-slate-900 text-white text-xs py-2 px-4 flex flex-wrap justify-between items-center gap-2">
-    <span>Acessibilidade: Use <kbd class="bg-slate-700 px-1 rounded text-yellow-300">Alt + 1</kbd> Início, <kbd class="bg-slate-700 px-1 rounded text-yellow-300">Alt + 2</kbd> Teoria, <kbd class="bg-slate-700 px-1 rounded text-yellow-300">Alt + 3</kbd> Simulador, <kbd class="bg-slate-700 px-1 rounded text-yellow-300">Alt + 4</kbd> Comparativo</span>
+    <span>Acessibilidade: Use <kbd class="bg-slate-700 px-1 rounded text-yellow-300">Alt + 1</kbd> Início, <kbd class="bg-slate-700 px-1 rounded text-yellow-300">Alt + 2</kbd> Teoria, <kbd class="bg-slate-700 px-1 rounded text-yellow-300">Alt + 3</kbd> Simulador, <kbd class="bg-slate-700 px-1 rounded text-yellow-300">Alt + 4</kbd> Comparativo, <kbd class="bg-slate-700 px-1 rounded text-yellow-300">Alt + 5</kbd> Inclusão</span>
     <div class="flex items-center space-x-3">
       <button onclick="toggleAltoContraste()" class="bg-slate-800 hover:bg-slate-700 text-yellow-400 px-2 py-1 rounded border border-yellow-400 font-medium">Alto Contraste</button>
       <button onclick="toggleFonteDislexia()" class="bg-slate-800 hover:bg-slate-700 text-cyan-300 px-2 py-1 rounded border border-cyan-300 font-medium">Fonte Dislexia</button>
@@ -93,7 +93,7 @@
         </p>
         <div class="grid md:grid-cols-3 gap-4 mt-6">
           <div class="p-4 bg-amber-50 border border-amber-200 rounded-lg">
-            <h3 class="font-bold text-amber-800 text-lg mb-1">1. Fótons Solas</h3>
+            <h3 class="font-bold text-amber-800 text-lg mb-1">1. Fótons Solares</h3>
             <p class="text-sm text-slate-600">A radiação solar transporta pacotes quantizados de energia que incidem sobre as placas.</p>
           </div>
           <div class="p-4 bg-cyan-50 border border-cyan-200 rounded-lg">
@@ -144,7 +144,7 @@
         <div class="space-y-4">
           <h3 class="text-xl font-semibold text-slate-800">3. Como a célula fotovoltaica transforma luz em eletricidade para a piscina?</h3>
           <p class="text-slate-700 leading-relaxed">
-            O painel fotovoltaico possui duas camadas de silício dopado (Tipo N e Tipo P). Quando os fótons com $f > f_0$ atingem a junção, ejetam elétrons. O campo elétrico interno direciona esse fluxo de elétrons, gerando <strong>corrente contínua (CC)</strong>. Essa eletricidade aciona a bomba de circulação, enviando água fria da piscina para ser aquecida no sistema de troca térmica.
+            O painel fotovoltaico possui duas camadas de silício dopado (Tipo N e Tipo P). Quando os fótons com $f \ge f_0$ atingem a junção, ejetam elétrons. O campo elétrico interno direciona esse fluxo de elétrons, gerando <strong>corrente contínua (CC)</strong>. Essa eletricidade aciona a bomba de circulação, enviando água fria da piscina para ser aquecida no sistema de troca térmica.
           </p>
         </div>
       </div>
@@ -183,7 +183,7 @@
             </div>
           </div>
 
-          <!-- Área de Animação em Canvas (Dimensão Fixa para Renderização Correta) -->
+          <!-- Área de Animação em Canvas -->
           <div class="lg:col-span-2 flex flex-col items-center">
             <canvas id="simCanvas" width="600" height="320" class="w-full max-w-[600px] h-[320px] bg-slate-900 rounded-xl shadow-inner border border-slate-700"></canvas>
             <div class="flex flex-wrap justify-center gap-4 mt-3 text-xs text-slate-600">
@@ -234,23 +234,46 @@
 
     <!-- ABA 5: ACESSIBILIDADE E INCLUSÃO -->
     <section id="tab-acessibilidade" class="tab-content hidden space-y-6">
-      <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
-        <h2 class="text-2xl font-bold text-blue-900">Central de Acessibilidade & Impacto Social</h2>
-        <p class="text-slate-700">Este site foi projetado sob os padrões da WCAG 2.1 (Nível AAA) para garantir que o aprendizado de física seja acessível a todos.</p>
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-6">
+        <h2 class="text-2xl font-bold text-blue-900">Central de Acessibilidade & Vídeo em Libras</h2>
+        <p class="text-slate-700">Este site foi projetado sob os padrões da WCAG 2.1 (Nível AAA) para garantir que o aprendizado de física seja totalmente inclusivo.</p>
         
+        <!-- Player do YouTube Integrado -->
+        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 text-white space-y-3">
+          <h3 class="text-lg font-bold text-amber-400 flex items-center gap-2">
+            <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            Vídeo Explicativo em Libras (YouTube)
+          </h3>
+          <p class="text-xs text-slate-300">Assista à explicação em Libras sobre o projeto da piscina e o efeito fotoelétrico:</p>
+          
+          <!-- Container Responsivo para o Iframe do YouTube -->
+          <div class="relative w-full aspect-video rounded-lg overflow-hidden shadow-md bg-slate-800">
+            <!-- COLE O SEU LINK DE INCORPORAÇÃO DO YOUTUBE NO ATRIBUTO src ABAIXO -->
+            <iframe 
+              class="w-full h-full" 
+              src="https://www.youtube.com/embed/oRUubHKTbUE" 
+              title="Vídeo Explicativo em Libras" 
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              allowfullscreen>
+            </iframe>
+          </div>
+          <p class="text-xs text-slate-400 italic">Substitua o trecho <code>SEU_CODIGO_DO_VIDEO</code> na linha acima do código pelo ID do seu vídeo do YouTube (exemplo: se o link for <code>youtube.com/watch?v=dQw4w9WgXcQ</code>, o ID é <code>dQw4w9WgXcQ</code>).</p>
+        </div>
+
         <div class="grid md:grid-cols-2 gap-4 mt-4">
           <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
             <h3 class="font-bold text-slate-800 mb-2">Recursos de Inclusão Digital</h3>
             <ul class="list-disc list-inside text-sm text-slate-600 space-y-1">
-              <li>Widget do <strong>VLibras</strong> integrado para tradução em tempo real.</li>
-              <li>Atalhos de teclado (<kbd>Alt+1</kbd> até <kbd>Alt+4</kbd>).</li>
-              <li>Alternância para alto contraste e tipografia amigável para dislexia.</li>
+              <li>Widget do <strong>VLibras</strong> ativo no canto direito da tela.</li>
+              <li>Navegação total por teclado (<kbd>Alt+1</kbd> até <kbd>Alt+5</kbd>).</li>
+              <li>Modos de alto contraste e fonte para dislexia.</li>
             </ul>
           </div>
           <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
             <h3 class="font-bold text-slate-800 mb-2">Impacto Social & Sustentabilidade</h3>
             <p class="text-sm text-slate-600">
-              O projeto estimula a automação verde, reduzindo a pegada de carbono do aquecimento de piscinas e demonstrando como a física quântica apoia os Objetivos de Desenvolvimento Sustentável (ODS 7 e ODS 13 da ONU).
+              O projeto estimula a automação verde, reduzindo a pegada de carbono do aquecimento de piscinas e alinhando-se aos Objetivos de Desenvolvimento Sustentável (ODS 7 e ODS 13 da ONU).
             </p>
           </div>
         </div>
@@ -283,12 +306,13 @@
       document.body.classList.toggle('dyslexic-font');
     }
 
-    // Atalhos Globais de Teclado (Alt + 1, Alt + 2, Alt + 3, Alt + 4)
+    // Atalhos Globais de Teclado (Alt + 1 até Alt + 5)
     window.addEventListener('keydown', (e) => {
       if (e.altKey && e.key === '1') showTab('home');
       if (e.altKey && e.key === '2') showTab('teoria');
       if (e.altKey && e.key === '3') showTab('simulador');
       if (e.altKey && e.key === '4') showTab('comparativo');
+      if (e.altKey && e.key === '5') showTab('acessibilidade');
     });
 
     // Lógica do Simulador Canvas
