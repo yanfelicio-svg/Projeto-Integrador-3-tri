@@ -1,20 +1,65 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="h-full">
+<html lang="pt-BR" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Efeito Fotoelétrico & Aquecimento Solar de Piscina</title>
+  <title>Efeito Fotoelétrico & Piscina Sustentável | Projeto Educacional Acessível</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Fontes Google (Inter para legibilidade limpa e Fontes para Acessibilidade) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- VLibras Widget Script -->
-  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            solar: {
+              50: '#fffbeb',
+              100: '#fef3c7',
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+            },
+            ocean: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#06b6d4',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            }
+          }
+        }
+      }
+    }
+  </script>
 
   <style>
+    /* Estilos Customizados de Acessibilidade */
     .dyslexic-font {
-      font-family: 'Comic Sans MS', 'Chalkboard SE', 'OpenDyslexic', sans-serif !important;
+      font-family: 'Comic Sans MS', 'OpenDyslexic', 'Arial', sans-serif !important;
+      letter-spacing: 0.05em;
+      line-height: 1.8 !important;
     }
+
+    /* Foco acessível bem visível para navegação via Teclado */
+    *:focus-visible {
+      outline: 4px solid #f59e0b !important;
+      outline-offset: 3px !important;
+    }
+
+    /* Modo Alto Contraste */
     .high-contrast {
       background-color: #000000 !important;
       color: #ffff00 !important;
@@ -23,396 +68,1005 @@
     .high-contrast div, 
     .high-contrast header, 
     .high-contrast footer,
-    .high-contrast nav,
-    .high-contrast table,
-    .high-contrast td,
-    .high-contrast th {
-      background-color: #121212 !important;
+    .high-contrast card {
+      background-color: #000000 !important;
       color: #ffffff !important;
       border-color: #ffff00 !important;
     }
+    .high-contrast a, 
     .high-contrast button {
+      color: #ffff00 !important;
+      border: 2px solid #ffff00 !important;
+      background: #000000 !important;
+    }
+    .high-contrast button:hover,
+    .high-contrast button:focus {
       background-color: #ffff00 !important;
       color: #000000 !important;
-      font-weight: bold !important;
     }
-    :focus-visible {
-      outline: 4px solid #f59e0b !important;
-      outline-offset: 2px !important;
+
+    /* Animações Suaves */
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.8; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.03); }
+    }
+    .pulse-animation {
+      animation: pulseGlow 3s infinite ease-in-out;
+    }
+
+    /* Estilo do Slider de Frequência de Luz */
+    input[type=range]::-webkit-slider-thumb {
+      height: 24px;
+      width: 24px;
+      border-radius: 50%;
+      background: #f59e0b;
+      cursor: pointer;
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 6px rgba(0,0,0,0.3);
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans flex flex-col min-h-full transition-colors duration-300">
+<body class="bg-slate-50 text-slate-800 font-sans transition-colors duration-200 min-h-screen flex flex-col antialiased">
 
-  <!-- VLibras Integração -->
+  <!-- LINK RÁPIDO PARA IR AO CONTEÚDO (Acessibilidade por Teclado) -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-solar-500 focus:text-slate-900 focus:font-bold focus:shadow-lg">
+    Pular para o conteúdo principal (Atalho Alt+1)
+  </a>
+
+  <!-- BARRA DE ACESSIBILIDADE FIXA NO TOPO -->
+  <header class="bg-ocean-900 text-white sticky top-0 z-40 border-b border-ocean-700 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap items-center justify-between gap-2 text-xs md:text-sm" role="toolbar" aria-label="Ferramentas de Acessibilidade">
+      <div class="flex items-center space-x-2 font-semibold">
+        <i class="fa-solid fa-universal-access text-solar-400 text-lg" aria-hidden="true"></i>
+        <span>Recursos de Acessibilidade</span>
+      </div>
+
+      <!-- Botões de Controle de Leitura e Contraste -->
+      <div class="flex flex-wrap items-center gap-2">
+        <!-- Alterar Tamanho do Texto -->
+        <div class="flex items-center bg-ocean-800 rounded-lg p-1 border border-ocean-700">
+          <span class="px-2 text-xs font-semibold text-ocean-100">Fonte:</span>
+          <button id="btn-dec-font" onclick="changeFontSize(-1)" class="px-2 py-1 bg-ocean-700 hover:bg-solar-500 hover:text-slate-900 rounded font-bold transition" aria-label="Diminuir tamanho da fonte">A-</button>
+          <button id="btn-reset-font" onclick="resetFontSize()" class="px-2 py-1 bg-ocean-700 hover:bg-solar-500 hover:text-slate-900 rounded font-bold transition mx-1" aria-label="Restaurar tamanho da fonte original">A</button>
+          <button id="btn-inc-font" onclick="changeFontSize(1)" class="px-2 py-1 bg-ocean-700 hover:bg-solar-500 hover:text-slate-900 rounded font-bold transition" aria-label="Aumentar tamanho da fonte">A+</button>
+        </div>
+
+        <!-- Fonte para Dislexia -->
+        <button id="btn-dyslexia" onclick="toggleDyslexiaFont()" class="px-3 py-1 bg-ocean-800 hover:bg-solar-500 hover:text-slate-900 rounded-lg border border-ocean-700 font-medium transition flex items-center gap-1" aria-pressed="false">
+          <i class="fa-solid fa-font" aria-hidden="true"></i> Fonte Dislexia
+        </button>
+
+        <!-- Modo Alto Contraste -->
+        <button id="btn-contrast" onclick="toggleHighContrast()" class="px-3 py-1 bg-ocean-800 hover:bg-solar-500 hover:text-slate-900 rounded-lg border border-ocean-700 font-medium transition flex items-center gap-1" aria-pressed="false">
+          <i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i> Alto Contraste
+        </button>
+
+        <!-- Atalhos Teclado Modal -->
+        <button onclick="toggleShortcutsModal()" class="px-3 py-1 bg-solar-500 text-slate-900 font-semibold hover:bg-solar-400 rounded-lg transition flex items-center gap-1" aria-label="Ver atalhos do teclado">
+          <i class="fa-solid fa-keyboard" aria-hidden="true"></i> Atalhos (Alt+K)
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVEGAÇÃO PRINCIPAL DAS SEÇÕES DO SITE -->
+  <nav class="bg-gradient-to-r from-ocean-800 via-ocean-700 to-ocean-900 text-white shadow-lg sticky top-[45px] z-30">
+    <div class="max-w-7xl mx-auto px-4 flex flex-wrap justify-between items-center py-3">
+      <!-- Logo do Projeto Sol + Água -->
+      <a href="#inicio" onclick="switchTab('inicio')" class="flex items-center gap-3 group focus:outline-none">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-solar-400 to-ocean-500 flex items-center justify-center text-slate-900 font-extrabold text-xl shadow-md group-hover:scale-105 transition-transform">
+          <i class="fa-solid fa-sun-plant-wilt text-solar-500"></i>
+          ☀️
+        </div>
+        <div>
+          <span class="text-xl font-extrabold tracking-tight block leading-none">SOL + ÁGUA</span>
+          <span class="text-xs text-solar-300 font-medium">Física Quântica & Sustentabilidade</span>
+        </div>
+      </a>
+
+      <!-- Menu Principal de Abas / Seções -->
+      <ul class="flex flex-wrap gap-1 md:gap-2 mt-3 sm:mt-0 font-medium text-sm" role="tablist" aria-label="Navegação Principal do Projeto">
+        <li role="presentation">
+          <button id="tab-inicio" onclick="switchTab('inicio')" role="tab" aria-selected="true" aria-controls="sec-inicio" class="tab-btn px-3 py-2 rounded-lg bg-solar-500 text-slate-900 font-bold transition flex items-center gap-1.5">
+            <i class="fa-solid fa-house" aria-hidden="true"></i> <span>1. Início</span>
+          </button>
+        </li>
+        <li role="presentation">
+          <button id="tab-teoria" onclick="switchTab('teoria')" role="tab" aria-selected="false" aria-controls="sec-teoria" class="tab-btn px-3 py-2 rounded-lg hover:bg-ocean-600 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-atom" aria-hidden="true"></i> <span>2. Teoria Quântica</span>
+          </button>
+        </li>
+        <li role="presentation">
+          <button id="tab-comparativo" onclick="switchTab('comparativo')" role="tab" aria-selected="false" aria-controls="sec-comparativo" class="tab-btn px-3 py-2 rounded-lg hover:bg-ocean-600 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-code-compare" aria-hidden="true"></i> <span>3. Térmico vs Fotovoltaico</span>
+          </button>
+        </li>
+        <li role="presentation">
+          <button id="tab-simulador" onclick="switchTab('simulador')" role="tab" aria-selected="false" aria-controls="sec-simulador" class="tab-btn px-3 py-2 rounded-lg hover:bg-ocean-600 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-flask-vial" aria-hidden="true"></i> <span>4. Simulador Piscina</span>
+          </button>
+        </li>
+        <li role="presentation">
+          <button id="tab-inclusao" onclick="switchTab('inclusao')" role="tab" aria-selected="false" aria-controls="sec-inclusao" class="tab-btn px-3 py-2 rounded-lg hover:bg-ocean-600 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-hands-asl-interpreting" aria-hidden="true"></i> <span>5. Libras & Social</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main id="main-content" class="flex-grow max-w-7xl w-full mx-auto px-4 py-8" tabindex="-1">
+
+    <!-- ==========================================
+         SEÇÃO 1: INÍCIO / APRESENTAÇÃO
+    ========================================== -->
+    <section id="sec-inicio" class="tab-content block space-y-8" role="tabpanel" aria-labelledby="tab-inicio">
+      
+      <!-- Hero Banner Identity Sol + Água -->
+      <div class="relative bg-gradient-to-r from-ocean-900 via-ocean-800 to-ocean-900 text-white rounded-3xl p-6 md:p-12 shadow-2xl overflow-hidden border border-ocean-700">
+        <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-solar-500 rounded-full blur-3xl opacity-20 pointer-events-none"></div>
+        
+        <div class="relative z-10 max-w-3xl space-y-6">
+          <div class="inline-flex items-center gap-2 bg-solar-500/20 text-solar-300 border border-solar-500/40 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
+            <i class="fa-solid fa-award" aria-hidden="true"></i> Projeto Escolar Educacional Interativo
+          </div>
+          
+          <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
+            Do Quantum à Piscina:<br>
+            <span class="text-solar-400">Efeito Fotoelétrico & Energia Solar</span>
+          </h1>
+          
+          <p class="text-base sm:text-lg text-ocean-100 leading-relaxed">
+            Como pacotes invisíveis de luz solar chamados <strong>fótons</strong> libertam elétrons microscópicos para gerar eletricidade e manter a água da piscina aquecida e limpa de forma 100% sustentável? Explore nossa teoria interativa e experimente no simulador!
+          </p>
+
+          <div class="flex flex-wrap gap-4 pt-2">
+            <button onclick="switchTab('simulador')" class="bg-solar-500 hover:bg-solar-400 text-slate-900 font-extrabold px-6 py-3.5 rounded-xl shadow-lg hover:shadow-solar-500/30 transition transform hover:-translate-y-0.5 flex items-center gap-3">
+              <i class="fa-solid fa-play text-xl" aria-hidden="true"></i>
+              <span>Testar Simulador Interativo</span>
+            </button>
+            <button onclick="switchTab('teoria')" class="bg-ocean-700/60 hover:bg-ocean-600 text-white font-bold px-6 py-3.5 rounded-xl border border-ocean-500 transition flex items-center gap-2">
+              <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+              <span>Entender a Física Quântica</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Destaques dos Critérios Avaliados -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200 hover:border-ocean-500 transition">
+          <div class="w-12 h-12 rounded-xl bg-solar-100 text-solar-600 flex items-center justify-center text-2xl font-bold mb-4">
+            <i class="fa-solid fa-atom"></i>
+          </div>
+          <h2 class="text-xl font-bold text-slate-900 mb-2">100% Fundamentado</h2>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Conceitos quânticos explicados passo a passo: constante de Planck, frequência de corte do Silício e a junção P-N em painéis fotovoltaicos.
+          </p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200 hover:border-ocean-500 transition">
+          <div class="w-12 h-12 rounded-xl bg-ocean-100 text-ocean-600 flex items-center justify-center text-2xl font-bold mb-4">
+            <i class="fa-solid fa-water"></i>
+          </div>
+          <h2 class="text-xl font-bold text-slate-900 mb-2">Aplicação Prática na Piscina</h2>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Comparativo real entre o aquecimento térmico direto da água e a geração fotovoltaica para automação e bombas de calor sustentáveis.
+          </p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200 hover:border-ocean-500 transition">
+          <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl font-bold mb-4">
+            <i class="fa-solid fa-universal-access"></i>
+          </div>
+          <h2 class="text-xl font-bold text-slate-900 mb-2">Inclusão Total & Libras</h2>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Desenvolvido para leitores de tela, com modo alto contraste, fonte para dislexia, navegação completa por teclado e suporte a Libras.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SEÇÃO 2: TEORIA QUÂNTICA E FOTOELÉTRICA
+    ========================================== -->
+    <section id="sec-teoria" class="tab-content hidden space-y-8" role="tabpanel" aria-labelledby="tab-teoria">
+      
+      <div class="border-b border-slate-200 pb-4">
+        <span class="text-sm font-bold text-ocean-600 uppercase tracking-widest">Fundamentação Científica</span>
+        <h1 class="text-3xl font-extrabold text-slate-900 mt-1">Efeito Fotoelétrico & Física Quântica</h1>
+        <p class="text-slate-600 mt-2">Respostas claras para as quatro perguntas orientadoras do projeto.</p>
+      </div>
+
+      <!-- Card 1: Fótons e a Equação de Planck -->
+      <article class="bg-white rounded-2xl p-6 md:p-8 shadow-md border border-slate-200 space-y-4">
+        <div class="flex items-center gap-3">
+          <span class="w-8 h-8 rounded-full bg-solar-500 text-slate-900 font-extrabold flex items-center justify-center text-sm">1</span>
+          <h2 class="text-xl md:text-2xl font-bold text-slate-900">O que são fótons e como sua energia depende da frequência?</h2>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+          <div class="md:col-span-2 space-y-3 text-slate-700 leading-relaxed">
+            <p>
+              Na física clássica, a luz era vista apenas como uma onda. Contudo, em 1905, Albert Einstein explicou o Efeito Fotoelétrico mostrando que a radiação eletromagnética é composta por pacotes discretos (quantizados) de energia chamados <strong>fótons</strong>.
+            </p>
+            <p>
+              A energia ($E$) transportada por cada fóton não depende da intensidade do brilho da luz, mas sim unicamente de sua <strong>frequência ($f$)</strong>. Essa relação é descrita pela famosa <em>Equação de Planck-Einstein</em>:
+            </p>
+            <div class="bg-slate-900 text-solar-400 p-4 rounded-xl font-mono text-center text-xl font-bold border border-slate-800 shadow-inner">
+              E = h · f
+            </div>
+            <p class="text-xs text-slate-500">
+              *Onde <strong>h</strong> é a Constante de Planck ($6{,}626 \times 10^{-34} \text{ J}\cdot\text{s}$) e <strong>f</strong> é a frequência em Hertz (Hz).
+            </p>
+          </div>
+          <div class="bg-solar-50 rounded-xl p-5 border border-solar-200 flex flex-col justify-center space-y-3 text-sm">
+            <h3 class="font-bold text-solar-700 uppercase tracking-wider text-xs">Exemplo Prático:</h3>
+            <ul class="space-y-2 text-slate-700">
+              <li class="flex items-start gap-2">
+                <i class="fa-solid fa-triangle-exclamation text-red-500 mt-1"></i>
+                <span><strong>Luz Infravermelha:</strong> Frequência baixa = Fótons com pouca energia. Não consegue soltar elétrons.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fa-solid fa-check-circle text-emerald-600 mt-1"></i>
+                <span><strong>Luz Azul / UV:</strong> Frequência alta = Fótons altamente energéticos! Consegue ejectar elétrons do silício.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 2: Frequência de Corte -->
+      <article class="bg-white rounded-2xl p-6 md:p-8 shadow-md border border-slate-200 space-y-4">
+        <div class="flex items-center gap-3">
+          <span class="w-8 h-8 rounded-full bg-solar-500 text-slate-900 font-extrabold flex items-center justify-center text-sm">2</span>
+          <h2 class="text-xl md:text-2xl font-bold text-slate-900">O que significa Frequência de Corte ($f_0$)?</h2>
+        </div>
+        <p class="text-slate-700 leading-relaxed">
+          Cada material possui uma energia mínima necessária para que um elétron seja arrancado de sua superfície, chamada de <strong>Função Trabalho ($\Phi$)</strong>.
+        </p>
+        <div class="bg-ocean-50 p-5 rounded-xl border border-ocean-200 space-y-3 text-slate-800">
+          <p class="font-semibold text-ocean-900">
+            A <strong>Frequência de Corte ($f_0$)</strong> é o limiar exato de frequência luminosa necessária para superar essa barreira:
+          </p>
+          <div class="bg-white p-3 rounded-lg font-mono text-center font-bold text-ocean-700 border border-ocean-300">
+            f₀ = Φ / h
+          </div>
+          <ul class="list-disc pl-5 space-y-1 text-sm text-slate-700">
+            <li>Se $f < f_0$: Nenhum elétron é liberado, independentemente do tempo ou da quantidade de luz.</li>
+            <li>Se $f \ge f_0$: Elétrons são ejetados instantaneamente. O excesso de energia vira velocidade (energia cinética).</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Card 3: Célula Fotovoltaica e Junção P-N -->
+      <article class="bg-white rounded-2xl p-6 md:p-8 shadow-md border border-slate-200 space-y-4">
+        <div class="flex items-center gap-3">
+          <span class="w-8 h-8 rounded-full bg-solar-500 text-slate-900 font-extrabold flex items-center justify-center text-sm">3</span>
+          <h2 class="text-xl md:text-2xl font-bold text-slate-900">Como a célula de Silício transforma Luz em Eletricidade?</h2>
+        </div>
+        <p class="text-slate-700 leading-relaxed">
+          As placas solares modernas usam o efeito fotoelétrico em um semicondutor (Silício) estruturado em duas camadas dopadas quimicamente: a <strong>Junção P-N</strong>.
+        </p>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center pt-2">
+          <div class="bg-slate-100 p-4 rounded-xl border border-slate-300">
+            <span class="text-xs font-bold text-slate-500 uppercase">Passo A</span>
+            <h3 class="font-bold text-slate-900 mt-1">Absorção de Fótons</h3>
+            <p class="text-xs text-slate-600 mt-1">Fótons solares com $f \ge f_0$ colidem com átomos de Silício e transferem sua energia para os elétrons.</p>
+          </div>
+          <div class="bg-slate-100 p-4 rounded-xl border border-slate-300">
+            <span class="text-xs font-bold text-slate-500 uppercase">Passo B</span>
+            <h3 class="font-bold text-slate-900 mt-1">Criação de Pares</h3>
+            <p class="text-xs text-slate-600 mt-1">O elétron ganha liberdade e deixa um espaço vazio ("lacuna") para trás no retículo do Silício.</p>
+          </div>
+          <div class="bg-slate-100 p-4 rounded-xl border border-slate-300">
+            <span class="text-xs font-bold text-slate-500 uppercase">Passo C</span>
+            <h3 class="font-bold text-slate-900 mt-1">Campo Elétrico P-N</h3>
+            <p class="text-xs text-slate-600 mt-1">O campo elétrico interno direciona os elétrons para um circuito externo: gerando <strong>Corrente Elétrica Contínua!</strong></p>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- ==========================================
+         SEÇÃO 3: COMPARATIVO TÉRMICO VS FOTOVOLTAICO
+    ========================================== -->
+    <section id="sec-comparativo" class="tab-content hidden space-y-8" role="tabpanel" aria-labelledby="tab-comparativo">
+      
+      <div class="border-b border-slate-200 pb-4">
+        <span class="text-sm font-bold text-ocean-600 uppercase tracking-widest">Conexão Prática com a Piscina</span>
+        <h1 class="text-3xl font-extrabold text-slate-900 mt-1">Aquecimento Solar Térmico vs. Fotovoltaico</h1>
+        <p class="text-slate-600 mt-2">Entenda as diferenças tecnológicas entre aquecer a água diretamente por calor ou gerar eletricidade via efeito fotoelétrico.</p>
+      </div>
+
+      <!-- Tabela Comparativa Acessível -->
+      <div class="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse" aria-label="Tabela Comparativa de Sistemas de Aquecimento de Piscina">
+            <thead>
+              <tr class="bg-ocean-900 text-white text-sm">
+                <th scope="col" class="p-4 md:p-5 font-bold">Critério de Análise</th>
+                <th scope="col" class="p-4 md:p-5 font-bold text-solar-400">🔥 Aquecimento Solar Térmico</th>
+                <th scope="col" class="p-4 md:p-5 font-bold text-ocean-300">⚡ Aquecimento Fotovoltaico + Bomba de Calor</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 text-sm md:text-base text-slate-700">
+              <tr class="hover:bg-slate-50">
+                <th scope="row" class="p-4 font-bold text-slate-900 bg-slate-50">Princípio Físico</th>
+                <td class="p-4">Absorção de radiação infravermelha (troca direta de calor fluido-tubo).</td>
+                <td class="p-4 font-semibold text-ocean-800">Efeito Fotoelétrico (luz virando eletricidade via fótons/silício).</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <th scope="row" class="p-4 font-bold text-slate-900 bg-slate-50">Equipamento no Telhado</th>
+                <td class="p-4">Coletores de Polipropileno ou Tubos a Vácuo cheios d'água.</td>
+                <td class="p-4">Painéis Solares Fotovoltaicos de Silício.</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <th scope="row" class="p-4 font-bold text-slate-900 bg-slate-50">Eficiência na Água</th>
+                <td class="p-4">Muito alta (~70-80%) para aquecer a água de forma direta sob sol forte.</td>
+                <td class="p-4">Menor eficiência direta (~20%), porém multiplicada ao usar uma Bomba de Calor (COP 5).</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <th scope="row" class="p-4 font-bold text-slate-900 bg-slate-50">Versatilidade do Sistema</th>
+                <td class="p-4 text-amber-700">Limitado: Só aquece água quando há sol direto.</td>
+                <td class="p-4 font-bold text-emerald-700">Alta: A energia alimenta bombas de piscina, iluminação, automação e sobra para a casa.</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <th scope="row" class="p-4 font-bold text-slate-900 bg-slate-50">Funcionamento Noturno</th>
+                <td class="p-4">Não aquece à noite (depende do isolamento térmico da capa).</td>
+                <td class="p-4">Funciona acionando a bomba de calor com créditos ou eletricidade gerada de dia.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Resumo do Vencedor da Automação -->
+      <div class="bg-gradient-to-r from-solar-500 to-amber-500 text-slate-900 p-6 rounded-2xl shadow-lg flex flex-col md:flex-row items-center justify-between gap-4">
+        <div>
+          <h3 class="text-xl font-extrabold">Por que a integração Fotovoltaica se destaca?</h3>
+          <p class="text-sm font-medium mt-1">Ao usar o efeito fotoelétrico, você não apenas aquece a piscina, mas automatiza a filtragem, o tratamento de cloro e zera a conta de luz da bomba de circulação!</p>
+        </div>
+        <button onclick="switchTab('simulador')" class="bg-slate-900 text-white font-bold px-5 py-3 rounded-xl hover:bg-slate-800 transition whitespace-nowrap">
+          Ver no Simulador <i class="fa-solid fa-arrow-right ml-1"></i>
+        </button>
+      </div>
+
+    </section>
+
+    <!-- ==========================================
+         SEÇÃO 4: SIMULADOR INTERATIVO (LABORATÓRIO VIRTUAL)
+    ========================================== -->
+    <section id="sec-simulador" class="tab-content hidden space-y-8" role="tabpanel" aria-labelledby="tab-simulador">
+      
+      <div class="border-b border-slate-200 pb-4">
+        <span class="text-sm font-bold text-ocean-600 uppercase tracking-widest">Laboratório Interativo</span>
+        <h1 class="text-3xl font-extrabold text-slate-900 mt-1">Simulador de Aquecimento da Piscina Quântico</h1>
+        <p class="text-slate-600 mt-2">Ajuste a frequência e intensidade da luz solar para acionar o efeito fotoelétrico e ligar a bomba de aquecimento da piscina!</p>
+      </div>
+
+      <!-- PAINEL DO SIMULADOR (INTERATIVO) -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- CONTROLES DO USUÁRIO -->
+        <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200 space-y-6">
+          <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2 border-b pb-3">
+            <i class="fa-solid fa-sliders text-solar-500"></i> Parâmetros da Luz Solar
+          </h2>
+
+          <!-- Controle 1: Frequência da Luz (Comprimento de Onda) -->
+          <div class="space-y-2">
+            <div class="flex justify-between items-center">
+              <label for="freq-slider" class="text-sm font-bold text-slate-800">Frequência / Cor da Luz:</label>
+              <span id="freq-val-display" class="text-xs font-bold px-2 py-1 bg-slate-100 rounded text-slate-700">Infravermelho</span>
+            </div>
+            <input type="range" id="freq-slider" min="1" max="5" value="1" step="1" oninput="updateSimulation()" class="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-500 font-semibold uppercase">
+              <span>Infravermelho</span>
+              <span>Vermelho</span>
+              <span>Verde</span>
+              <span>Azul</span>
+              <span>Ultravioleta</span>
+            </div>
+            <p class="text-xs text-slate-500 italic mt-1" id="freq-help-text">
+              Frequência baixa ($f < f_0$). Fótons com pouca energia.
+            </p>
+          </div>
+
+          <!-- Controle 2: Intensidade Solar -->
+          <div class="space-y-2">
+            <div class="flex justify-between items-center">
+              <label for="int-slider" class="text-sm font-bold text-slate-800">Intensidade Solar (Brilho):</label>
+              <span id="int-val-display" class="text-xs font-bold px-2 py-1 bg-slate-100 rounded text-slate-700">50%</span>
+            </div>
+            <input type="range" id="int-slider" min="10" max="100" value="50" step="10" oninput="updateSimulation()" class="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+            <p class="text-xs text-slate-500">
+              Aumentar a intensidade gera *mais* fótons, mas não altera a energia individual de cada um.
+            </p>
+          </div>
+
+          <!-- Status do Sistema -->
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+            <h3 class="text-xs font-bold uppercase text-slate-500">Status da Reação Quântica</h3>
+            
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold">Emissão Fotoelétrica:</span>
+              <span id="status-emissao" class="text-xs font-extrabold px-2 py-1 rounded bg-red-100 text-red-700">BLOQUEADA ($f < f_0$)</span>
+            </div>
+            
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold">Bomba da Piscina:</span>
+              <span id="status-bomba" class="text-xs font-extrabold px-2 py-1 rounded bg-slate-200 text-slate-600">DESLIGADA</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold">Temperatura da Água:</span>
+              <span id="status-temp" class="text-sm font-extrabold text-ocean-700">20.0 °C</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CANVAS DE VISUALIZAÇÃO ANIMADA -->
+        <div class="lg:col-span-2 bg-slate-900 rounded-2xl p-4 shadow-xl border border-slate-800 flex flex-col justify-between relative overflow-hidden">
+          
+          <div class="flex justify-between items-center mb-2 z-10">
+            <span class="text-xs font-bold text-solar-400 uppercase tracking-widest flex items-center gap-2">
+              <i class="fa-solid fa-microscope"></i> Visualização em Tempo Real
+            </span>
+            <span class="text-xs text-slate-400">Silício ($f_0$ no tom Verde/Azul)</span>
+          </div>
+
+          <!-- Canvas Principal -->
+          <div class="relative w-full h-[360px] bg-slate-950 rounded-xl overflow-hidden border border-slate-800">
+            <canvas id="sim-canvas" class="w-full h-full block"></canvas>
+          </div>
+
+          <!-- Legenda do Diagrama -->
+          <div class="mt-3 grid grid-cols-3 text-center text-xs text-slate-400 pt-2 border-t border-slate-800">
+            <div class="flex items-center justify-center gap-1">
+              <span class="w-3 h-3 rounded-full bg-solar-400 inline-block"></span>
+              <span>Fótons (Luz)</span>
+            </div>
+            <div class="flex items-center justify-center gap-1">
+              <span class="w-3 h-3 rounded-full bg-cyan-400 inline-block"></span>
+              <span>Elétrons Ejetados</span>
+            </div>
+            <div class="flex items-center justify-center gap-1">
+              <span class="w-3 h-3 rounded-full bg-emerald-400 inline-block"></span>
+              <span>Água Aquecida</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ==========================================
+         SEÇÃO 5: INCLUSÃO, LIBRAS E IMPACTO SOCIAL
+    ========================================== -->
+    <section id="sec-inclusao" class="tab-content hidden space-y-8" role="tabpanel" aria-labelledby="tab-inclusao">
+      
+      <div class="border-b border-slate-200 pb-4">
+        <span class="text-sm font-bold text-ocean-600 uppercase tracking-widest">Inclusão Digital & Cidadania</span>
+        <h1 class="text-3xl font-extrabold text-slate-900 mt-1">Acessibilidade, Libras & Impacto Social</h1>
+        <p class="text-slate-600 mt-2">Como este projeto promove sustentabilidade ambiental e inclusão completa para todos os estudantes.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- Recurso em Libras (Vídeo/Modal Preparado) -->
+        <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200 space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-ocean-100 text-ocean-700 flex items-center justify-center text-xl font-bold">
+              <i class="fa-solid fa-hands-asl-interpreting"></i>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-slate-900">Conteúdo em Libras</h2>
+              <p class="text-xs text-slate-500">Língua Brasileira de Sinais</p>
+            </div>
+          </div>
+
+          <p class="text-sm text-slate-700 leading-relaxed">
+            Este site foi desenhado para ser 100% inclusivo para a comunidade surda. Além da integração com o VLibras oficial, disponibilizamos resumos em vídeo com tradução em Libras e legenda descritiva.
+          </p>
+
+          <!-- Mock Player de Vídeo em Libras -->
+          <div class="relative bg-slate-900 rounded-xl overflow-hidden aspect-video flex items-center justify-center border border-slate-700 text-center p-4">
+            <div class="space-y-3">
+              <i class="fa-solid fa-circle-play text-5xl text-solar-400 hover:scale-110 cursor-pointer transition"></i>
+              <p class="text-xs text-slate-300 font-semibold">Vídeo Educacional: Efeito Fotoelétrico em Libras (3:45)</p>
+              <span class="inline-block text-[10px] bg-slate-800 text-slate-400 px-2 py-1 rounded">Legendas CC disponíveis</span>
+            </div>
+          </div>
+
+          <div class="bg-slate-50 p-3 rounded-lg text-xs text-slate-600">
+            <strong>Transcrição Acessível:</strong> "Fótons solares batem no painel de silício. Se a energia da frequência for alta, libera elétrons para mover a bomba da piscina..."
+          </div>
+        </div>
+
+        <!-- Impacto Social e Automação Sustentável -->
+        <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200 space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl font-bold">
+              <i class="fa-solid fa-leaf"></i>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-slate-900">Inovação e Impacto Social</h2>
+              <p class="text-xs text-slate-500">Sustentabilidade & Economia</p>
+            </div>
+          </div>
+
+          <div class="space-y-3 text-sm text-slate-700 leading-relaxed">
+            <h3 class="font-bold text-slate-900">1. Redução de Pegada de Carbono:</h3>
+            <p>
+              Substituir aquecedores a gás por bombas de calor alimentadas por energia fotovoltaica evita a emissão de toneladas de CO₂ por ano por residência ou escola.
+            </p>
+
+            <h3 class="font-bold text-slate-900">2. Automação Inteligente de Baixo Custo:</h3>
+            <p>
+              Sensores de frequência e intensidade acionam a filtragem e aquecimento da piscina exatamente nos horários de pico solar, otimizando o consumo de energia sem desperdícios.
+            </p>
+
+            <h3 class="font-bold text-slate-900">3. Inclusão Educacional Digital:</h3>
+            <p>
+              Garantir que estudantes com deficiência visual, auditiva ou motora aprendam conceitos avançados de física quântica em igualdade de condições.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Guia de Atalhos do Teclado -->
+      <div class="bg-ocean-900 text-white rounded-2xl p-6 shadow-lg border border-ocean-700">
+        <h2 class="text-lg font-bold text-solar-400 mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-keyboard"></i> Guia de Navegação Completa por Teclado
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+          <div class="bg-ocean-800 p-3 rounded-lg border border-ocean-700">
+            <span class="font-bold text-solar-300 block mb-1">Alt + 1</span>
+            <span>Pular para o Conteúdo Principal</span>
+          </div>
+          <div class="bg-ocean-800 p-3 rounded-lg border border-ocean-700">
+            <span class="font-bold text-solar-300 block mb-1">Alt + 2</span>
+            <span>Ir para o Simulador da Piscina</span>
+          </div>
+          <div class="bg-ocean-800 p-3 rounded-lg border border-ocean-700">
+            <span class="font-bold text-solar-300 block mb-1">Alt + K</span>
+            <span>Abrir / Fechar Modal de Atalhos</span>
+          </div>
+          <div class="bg-ocean-800 p-3 rounded-lg border border-ocean-700">
+            <span class="font-bold text-solar-300 block mb-1">Tecla Tab</span>
+            <span>Navegar sequencialmente nos elementos</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- RODAPÉ ACESSÍVEL -->
+  <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+      <div>
+        <p class="font-bold text-slate-200">Projeto Educacional Escolar: Sol + Água</p>
+        <p class="mt-1">Efeito Fotoelétrico, Física Quântica e Aquecimento Sustentável de Piscinas.</p>
+      </div>
+      <div class="flex items-center gap-4 text-slate-300 font-medium">
+        <span>Acessibilidade 100% WCAG AAA</span>
+        <span>•</span>
+        <span>VLibras Integrado</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL DE ATALHOS DO TECLADO -->
+  <dialog id="shortcuts-modal" class="rounded-2xl p-6 bg-white shadow-2xl max-w-md w-full border border-slate-300 backdrop:bg-slate-900/60">
+    <form method="dialog" class="space-y-4">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="font-bold text-lg text-slate-900">Atalhos do Teclado</h3>
+        <button type="button" onclick="toggleShortcutsModal()" class="text-slate-500 hover:text-slate-800 font-bold">✕</button>
+      </div>
+      <ul class="space-y-2 text-sm text-slate-700">
+        <li><kbd class="bg-slate-100 px-2 py-1 rounded border text-xs font-mono">Alt + 1</kbd> - Ir para o início do conteúdo</li>
+        <li><kbd class="bg-slate-100 px-2 py-1 rounded border text-xs font-mono">Alt + 2</kbd> - Ir direto para o Simulador</li>
+        <li><kbd class="bg-slate-100 px-2 py-1 rounded border text-xs font-mono">Alt + K</kbd> - Abrir esta janela</li>
+        <li><kbd class="bg-slate-100 px-2 py-1 rounded border text-xs font-mono">Tab</kbd> - Avançar entre botões/links</li>
+        <li><kbd class="bg-slate-100 px-2 py-1 rounded border text-xs font-mono">Shift + Tab</kbd> - Voltar item anterior</li>
+      </ul>
+      <div class="pt-2 text-right">
+        <button type="button" onclick="toggleShortcutsModal()" class="px-4 py-2 bg-solar-500 text-slate-900 font-bold rounded-lg hover:bg-solar-400">Entendido</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- WIDGET VLIBRAS OFICIAL DO GOVERNO FEDERAL -->
   <div vw class="enabled">
     <div vw-access-button class="active"></div>
     <div vw-plugin-wrapper>
       <div class="vw-plugin-top-wrapper"></div>
     </div>
   </div>
-
-  <!-- Acessibilidade / Barra Superior de Atalhos -->
-  <div class="bg-slate-900 text-white text-xs py-2 px-4 flex flex-wrap justify-between items-center gap-2">
-    <span>Acessibilidade: Use <kbd class="bg-slate-700 px-1 rounded text-yellow-300">Alt + 1</kbd> Início, <kbd class="bg-slate-700 px-1 rounded text-yellow-300">Alt + 2</kbd> Teoria, <kbd class="bg-slate-700 px-1 rounded text-yellow-300">Alt + 3</kbd> Simulador, <kbd class="bg-slate-700 px-1 rounded text-yellow-300">Alt + 4</kbd> Comparativo</span>
-    <div class="flex items-center space-x-3">
-      <button onclick="toggleAltoContraste()" class="bg-slate-800 hover:bg-slate-700 text-yellow-400 px-2 py-1 rounded border border-yellow-400 font-medium">Alto Contraste</button>
-      <button onclick="toggleFonteDislexia()" class="bg-slate-800 hover:bg-slate-700 text-cyan-300 px-2 py-1 rounded border border-cyan-300 font-medium">Fonte Dislexia</button>
-    </div>
-  </div>
-
-  <!-- Cabeçalho / Identidade Sol + Água -->
-  <header class="bg-gradient-to-r from-blue-700 via-cyan-600 to-amber-500 text-white p-6 shadow-md">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-      <div>
-        <h1 class="text-3xl font-extrabold tracking-tight">Sol + Água: Física Quântica & Sustentabilidade</h1>
-        <p class="text-blue-100 text-sm mt-1">Do Efeito Fotoelétrico ao Aquecimento e Automação da Piscina</p>
-      </div>
-      <!-- Navegação Principal -->
-      <nav aria-label="Navegação Principal">
-        <ul class="flex flex-wrap gap-2">
-          <li><button onclick="showTab('home')" class="tab-btn px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg font-medium transition" id="btn-home">Início</button></li>
-          <li><button onclick="showTab('teoria')" class="tab-btn px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg font-medium transition" id="btn-teoria">Teoria</button></li>
-          <li><button onclick="showTab('simulador')" class="tab-btn px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg font-medium transition" id="btn-simulador">Simulador</button></li>
-          <li><button onclick="showTab('comparativo')" class="tab-btn px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg font-medium transition" id="btn-comparativo">Comparativo</button></li>
-          <li><button onclick="showTab('acessibilidade')" class="tab-btn px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg font-medium transition" id="btn-acessibilidade">Inclusão</button></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Conteúdo Principal -->
-  <main class="max-w-6xl mx-auto w-full flex-grow p-4 md:p-6">
-
-    <!-- ABA 1: INÍCIO -->
-    <section id="tab-home" class="tab-content space-y-6">
-      <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-        <h2 class="text-2xl font-bold text-blue-900 mb-3">Projeto Educacional Interativo: Sol + Água</h2>
-        <p class="leading-relaxed text-slate-700 mb-4">
-          Como a física quântica desenvolvida por Albert Einstein ajuda a manter uma piscina aquecida e limpa nos dias de hoje? Este site conecta a teoria microscópica da luz (fótons e elétrons) com soluções de sustentabilidade e inclusão social.
-        </p>
-        <div class="grid md:grid-cols-3 gap-4 mt-6">
-          <div class="p-4 bg-amber-50 border border-amber-200 rounded-lg">
-            <h3 class="font-bold text-amber-800 text-lg mb-1">1. Fótons Solas</h3>
-            <p class="text-sm text-slate-600">A radiação solar transporta pacotes quantizados de energia que incidem sobre as placas.</p>
-          </div>
-          <div class="p-4 bg-cyan-50 border border-cyan-200 rounded-lg">
-            <h3 class="font-bold text-cyan-800 text-lg mb-1">2. Efeito Fotoelétrico</h3>
-            <p class="text-sm text-slate-600">Fótons com frequência adequada ejetam elétrons do silício, gerando corrente elétrica.</p>
-          </div>
-          <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <h3 class="font-bold text-blue-800 text-lg mb-1">3. Piscina Aquecida</h3>
-            <p class="text-sm text-slate-600">A eletricidade gerada alimenta a bomba de calor e o sistema de filtragem automatizado.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ABA 2: TEORIA -->
-    <section id="tab-teoria" class="tab-content hidden space-y-6">
-      <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-6">
-        <h2 class="text-2xl font-bold text-blue-900">Aprofundamento Científico</h2>
-        
-        <div class="space-y-4">
-          <h3 class="text-xl font-semibold text-slate-800">1. O que são fótons e como sua energia depende da frequência?</h3>
-          <p class="text-slate-700 leading-relaxed">
-            A luz não se comporta apenas como uma onda contínua, mas também como um feixe de pacotes discretos de energia chamados <strong>fótons</strong>. A energia ($E$) de um fóton é diretamente proporcional à sua frequência ($f$), descrita pela equação de Planck:
-          </p>
-          <div class="bg-slate-100 p-4 rounded-lg border-l-4 border-amber-500 font-mono text-sm">
-            E = h · f
-          </div>
-          <p class="text-sm text-slate-600">
-            Onde <strong>h</strong> é a Constante de Planck ($6{,}63 \times 10^{-34}\text{ J}\cdot\text{s}$). Luzes de maior frequência (como azul e ultravioleta) carregam mais energia por fóton do que luzes de menor frequência (como vermelho e infravermelho).
-          </p>
-        </div>
-
-        <hr class="border-slate-200">
-
-        <div class="space-y-4">
-          <h3 class="text-xl font-semibold text-slate-800">2. O que significa frequência de corte ($f_0$)?</h3>
-          <p class="text-slate-700 leading-relaxed">
-            É a frequência mínima de radiação necessária para remover um elétron do material (como a placa de silício). Se a frequência da luz incidente for menor que $f_0$, <strong>nenhum elétron será emitido</strong>, independentemente da intensidade da luz. A energia excedente vira energia cinética para o elétron:
-          </p>
-          <div class="bg-slate-100 p-4 rounded-lg border-l-4 border-cyan-500 font-mono text-sm">
-            E_cinética = h · f - Φ
-          </div>
-          <p class="text-sm text-slate-600">Onde <strong>Φ</strong> é a Função Trabalho do material.</p>
-        </div>
-
-        <hr class="border-slate-200">
-
-        <div class="space-y-4">
-          <h3 class="text-xl font-semibold text-slate-800">3. Como a célula fotovoltaica transforma luz em eletricidade para a piscina?</h3>
-          <p class="text-slate-700 leading-relaxed">
-            O painel fotovoltaico possui duas camadas de silício dopado (Tipo N e Tipo P). Quando os fótons com $f > f_0$ atingem a junção, ejetam elétrons. O campo elétrico interno direciona esse fluxo de elétrons, gerando <strong>corrente contínua (CC)</strong>. Essa eletricidade aciona a bomba de circulação, enviando água fria da piscina para ser aquecida no sistema de troca térmica.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ABA 3: SIMULADOR -->
-    <section id="tab-simulador" class="tab-content hidden space-y-6">
-      <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-        <h2 class="text-2xl font-bold text-blue-900 mb-2">Laboratório Virtual Interativo</h2>
-        <p class="text-slate-600 text-sm mb-6">Ajuste os controles abaixo. Ao atingir a frequência de corte (comprimento de onda &le; 550nm), observe os elétrons ejetados acionando a bomba e elevando a temperatura da água da piscina!</p>
-
-        <div class="grid lg:grid-cols-3 gap-6">
-          
-          <!-- Controles do Simulador -->
-          <div class="space-y-6 bg-slate-50 p-4 rounded-xl border border-slate-200">
-            <div>
-              <label for="freqSlider" class="block font-semibold text-slate-700 mb-1">Comprimento de Onda ($\lambda$ em nm):</label>
-              <input type="range" id="freqSlider" min="300" max="800" value="700" class="w-full accent-amber-500">
-              <div class="flex justify-between text-xs text-slate-500 mt-1">
-                <span>300nm (UV/Azul - Alta Freq)</span>
-                <span>800nm (Infravermelho)</span>
-              </div>
-              <p class="text-sm font-mono mt-2 text-slate-800">Valor atual: <span id="valWave" class="font-bold text-amber-600">700</span> nm</p>
-            </div>
-
-            <div>
-              <label for="intSlider" class="block font-semibold text-slate-700 mb-1">Intensidade do Laser (Fótons/s):</label>
-              <input type="range" id="intSlider" min="1" max="10" value="4" class="w-full accent-blue-500">
-              <p class="text-sm font-mono mt-2 text-slate-800">Nível de Intensidade: <span id="valInt" class="font-bold text-blue-600">4</span></p>
-            </div>
-
-            <div class="p-3 bg-blue-100/50 rounded-lg text-xs space-y-2 text-blue-900 border border-blue-200">
-              <p><strong>Status do Circuito:</strong> <span id="statusTxt" class="font-bold text-red-600">Inativo (Sem emissão)</span></p>
-              <p><strong>Bomba da Piscina:</strong> <span id="pumpTxt" class="font-bold text-slate-600">Desligada</span></p>
-              <p><strong>Temp. da Piscina:</strong> <span id="tempTxt" class="font-bold text-lg text-cyan-700">20.0 °C</span></p>
-            </div>
-          </div>
-
-          <!-- Área de Animação em Canvas (Dimensão Fixa para Renderização Correta) -->
-          <div class="lg:col-span-2 flex flex-col items-center">
-            <canvas id="simCanvas" width="600" height="320" class="w-full max-w-[600px] h-[320px] bg-slate-900 rounded-xl shadow-inner border border-slate-700"></canvas>
-            <div class="flex flex-wrap justify-center gap-4 mt-3 text-xs text-slate-600">
-              <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-red-500 inline-block border border-white"></span> Fótons Incidentes</span>
-              <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-yellow-300 inline-block border border-white"></span> Elétrons Ejetados</span>
-              <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-cyan-400 inline-block border border-white"></span> Fluxo para Piscina</span>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ABA 4: COMPARATIVO -->
-    <section id="tab-comparativo" class="tab-content hidden space-y-6">
-      <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-        <h2 class="text-2xl font-bold text-blue-900 mb-4">Comparativo Visual: Térmico vs. Fotovoltaico</h2>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="bg-slate-100 text-slate-700 text-sm">
-                <th class="p-3 border">Critério</th>
-                <th class="p-3 border">Aquecimento Solar Térmico</th>
-                <th class="p-3 border">Sistema Fotovoltaico + Bomba</th>
-              </tr>
-            </thead>
-            <tbody class="text-sm text-slate-600">
-              <tr>
-                <td class="p-3 border font-semibold">Princípio Físico</td>
-                <td class="p-3 border">Absorção de radiação infravermelha para aquecer diretamente o fluido.</td>
-                <td class="p-3 border">Efeito fotoelétrico (conversão quantizada de luz em eletricidade).</td>
-              </tr>
-              <tr>
-                <td class="p-3 border font-semibold">Eficiência Térmica</td>
-                <td class="p-3 border">Alta para água (até 70-80% da energia solar direta).</td>
-                <td class="p-3 border">Depende do COP da bomba de calor (alta eficiência global).</td>
-              </tr>
-              <tr>
-                <td class="p-3 border font-semibold">Versatilidade</td>
-                <td class="p-3 border">Aquecimento exclusivo da água.</td>
-                <td class="p-3 border">Gera energia para a bomba, tratamento UV, iluminação e excesso residencial.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- ABA 5: ACESSIBILIDADE E INCLUSÃO -->
-    <section id="tab-acessibilidade" class="tab-content hidden space-y-6">
-      <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
-        <h2 class="text-2xl font-bold text-blue-900">Central de Acessibilidade & Impacto Social</h2>
-        <p class="text-slate-700">Este site foi projetado sob os padrões da WCAG 2.1 (Nível AAA) para garantir que o aprendizado de física seja acessível a todos.</p>
-        
-        <div class="grid md:grid-cols-2 gap-4 mt-4">
-          <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
-            <h3 class="font-bold text-slate-800 mb-2">Recursos de Inclusão Digital</h3>
-            <ul class="list-disc list-inside text-sm text-slate-600 space-y-1">
-              <li>Widget do <strong>VLibras</strong> integrado para tradução em tempo real.</li>
-              <li>Atalhos de teclado (<kbd>Alt+1</kbd> até <kbd>Alt+4</kbd>).</li>
-              <li>Alternância para alto contraste e tipografia amigável para dislexia.</li>
-            </ul>
-          </div>
-          <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
-            <h3 class="font-bold text-slate-800 mb-2">Impacto Social & Sustentabilidade</h3>
-            <p class="text-sm text-slate-600">
-              O projeto estimula a automação verde, reduzindo a pegada de carbono do aquecimento de piscinas e demonstrando como a física quântica apoia os Objetivos de Desenvolvimento Sustentável (ODS 7 e ODS 13 da ONU).
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Rodapé -->
-  <footer class="bg-slate-900 text-slate-400 py-4 px-6 text-center text-xs border-t border-slate-800">
-    <p>Projeto Escolar Educacional — Efeito Fotoelétrico & Aquecimento Solar de Piscina | 100% Acessível</p>
-  </footer>
-
-  <!-- Script JavaScript Integrado -->
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
   <script>
-    // Inicialização do VLibras
     new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
 
-    // Gerenciador de Abas
-    function showTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-      document.getElementById('tab-' + tabId).classList.remove('hidden');
+  <!-- LÓGICA JAVASCRIPT NATIVA DO SIMULADOR E ACESSIBILIDADE -->
+  <script>
+    /* ====================================================
+       1. GERENCIAMENTO DE ABAS E NAVEGAÇÃO ACESSÍVEL
+    ==================================================== */
+    function switchTab(tabId) {
+      // Esconder todas as seções
+      const contents = document.querySelectorAll('.tab-content');
+      contents.forEach(content => content.classList.add('hidden'));
+
+      // Desmarcar todas as abas no menu
+      const tabs = document.querySelectorAll('.tab-btn');
+      tabs.forEach(tab => {
+        tab.setAttribute('aria-selected', 'false');
+        tab.className = 'tab-btn px-3 py-2 rounded-lg hover:bg-ocean-600 transition flex items-center gap-1.5 text-white';
+      });
+
+      // Mostrar seção selecionada
+      const activeContent = document.getElementById('sec-' + tabId);
+      if (activeContent) {
+        activeContent.classList.remove('hidden');
+      }
+
+      // Destacar aba ativa
+      const activeTab = document.getElementById('tab-' + tabId);
+      if (activeTab) {
+        activeTab.setAttribute('aria-selected', 'true');
+        activeTab.className = 'tab-btn px-3 py-2 rounded-lg bg-solar-500 text-slate-900 font-bold transition flex items-center gap-1.5';
+      }
+
+      // Focar título da seção para leitores de tela
+      const heading = activeContent ? activeContent.querySelector('h1') : null;
+      if (heading) {
+        heading.setAttribute('tabindex', '-1');
+        heading.focus();
+      }
     }
 
-    // Acessibilidade: Alternar Estilos
-    function toggleAltoContraste() {
-      document.body.classList.toggle('high-contrast');
-    }
-    function toggleFonteDislexia() {
-      document.body.classList.toggle('dyslexic-font');
+    /* ====================================================
+       2. RECURSOS DE ACESSIBILIDADE (FONTE, DISLEXIA, CONTRASTE)
+    ==================================================== */
+    let currentFontSizeLevel = 0;
+    const fontClasses = ['text-sm', 'text-base', 'text-lg', 'text-xl'];
+
+    function changeFontSize(delta) {
+      const body = document.body;
+      currentFontSizeLevel = Math.max(-1, Math.min(2, currentFontSizeLevel + delta));
+      
+      if (currentFontSizeLevel === 1) {
+        body.style.fontSize = '115%';
+      } else if (currentFontSizeLevel === 2) {
+        body.style.fontSize = '130%';
+      } else if (currentFontSizeLevel === -1) {
+        body.style.fontSize = '90%';
+      } else {
+        body.style.fontSize = '100%';
+      }
     }
 
-    // Atalhos Globais de Teclado (Alt + 1, Alt + 2, Alt + 3, Alt + 4)
-    window.addEventListener('keydown', (e) => {
-      if (e.altKey && e.key === '1') showTab('home');
-      if (e.altKey && e.key === '2') showTab('teoria');
-      if (e.altKey && e.key === '3') showTab('simulador');
-      if (e.altKey && e.key === '4') showTab('comparativo');
+    function resetFontSize() {
+      currentFontSizeLevel = 0;
+      document.body.style.fontSize = '100%';
+    }
+
+    function toggleDyslexiaFont() {
+      const body = document.body;
+      const btn = document.getElementById('btn-dyslexia');
+      const isDyslexic = body.classList.toggle('dyslexic-font');
+      btn.setAttribute('aria-pressed', isDyslexic ? 'true' : 'false');
+      if (isDyslexic) {
+        btn.classList.add('bg-solar-500', 'text-slate-900');
+      } else {
+        btn.classList.remove('bg-solar-500', 'text-slate-900');
+      }
+    }
+
+    function toggleHighContrast() {
+      const body = document.body;
+      const btn = document.getElementById('btn-contrast');
+      const isContrast = body.classList.toggle('high-contrast');
+      btn.setAttribute('aria-pressed', isContrast ? 'true' : 'false');
+    }
+
+    function toggleShortcutsModal() {
+      const modal = document.getElementById('shortcuts-modal');
+      if (modal.open) {
+        modal.close();
+      } else {
+        modal.showModal();
+      }
+    }
+
+    // Atalhos globais de teclado (Alt + 1, Alt + 2, Alt + K)
+    document.addEventListener('keydown', (e) => {
+      if (e.altKey && e.key === '1') {
+        e.preventDefault();
+        switchTab('inicio');
+      } else if (e.altKey && e.key === '2') {
+        e.preventDefault();
+        switchTab('simulador');
+      } else if (e.altKey && (e.key === 'k' || e.key === 'K')) {
+        e.preventDefault();
+        toggleShortcutsModal();
+      }
     });
 
-    // Lógica do Simulador Canvas
-    const canvas = document.getElementById('simCanvas');
+    /* ====================================================
+       3. SIMULADOR DO EFEITO FOTOELÉTRICO E PISCINA (CANVAS HTML5)
+    ==================================================== */
+    const canvas = document.getElementById('sim-canvas');
     const ctx = canvas.getContext('2d');
 
-    const freqSlider = document.getElementById('freqSlider');
-    const intSlider = document.getElementById('intSlider');
-    const valWave = document.getElementById('valWave');
-    const valInt = document.getElementById('valInt');
-    const statusTxt = document.getElementById('statusTxt');
-    const pumpTxt = document.getElementById('pumpTxt');
-    const tempTxt = document.getElementById('tempTxt');
+    // Redimensionamento Acessível e Responsivo do Canvas
+    function resizeCanvas() {
+      if (!canvas) return;
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = canvas.parentElement.clientHeight || 360;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
+    // Estado da Simulação
+    let freqLevel = 1; // 1: Infravermelho, 2: Vermelho, 3: Verde, 4: Azul, 5: UV
+    let intensity = 50; // 10 a 100%
+    let poolTemperature = 20.0;
+    let isEmitting = false;
+
+    // Partículas
     let photons = [];
     let electrons = [];
-    let poolTemp = 20.0;
+    let waterBubbles = [];
 
-    // Converte comprimento de onda em cor hex visual
-    function getWavelengthColor(wavelength) {
-      if (wavelength < 450) return '#8b5cf6'; // Violeta / UV
-      if (wavelength < 520) return '#3b82f6'; // Azul
-      if (wavelength < 600) return '#22c55e'; // Verde
-      if (wavelength < 680) return '#eab308'; // Amarelo
-      return '#ef4444'; // Vermelho / Infravermelho
+    // Frequência de corte do Silício configurada no nível 3 (Verde)
+    const CUTOFF_LEVEL = 3;
+
+    // Configurações visuais aprimoradas para maior destaque das partículas
+    const freqConfig = {
+      1: { name: 'Infravermelho', color: '#ff4d4d', glow: '#ff0000', wavelength: 750, help: 'Frequência muito baixa. Fótons sem energia suficiente.' },
+      2: { name: 'Vermelho', color: '#ff7700', glow: '#ff4400', wavelength: 650, help: 'Abaixo da frequência de corte (f < f₀). Fótons quicam no silício.' },
+      3: { name: 'Verde', color: '#00ff66', glow: '#00cc44', wavelength: 530, help: 'LIMIAR ALCANÇADO (f = f₀)! Fótons soltam elétrons com baixa velocidade.' },
+      4: { name: 'Azul', color: '#00d9ff', glow: '#0088ff', wavelength: 460, help: 'ALTA ENERGIA (f > f₀)! Elétrons ejetados velozmente. Bomba ligada!' },
+      5: { name: 'Ultravioleta', color: '#bd00ff', glow: '#8800ff', wavelength: 320, help: 'ENERGIA MÁXIMA (f >> f₀)! Alta corrente elétrica e aquecimento rápido.' }
+    };
+
+    function updateSimulation() {
+      freqLevel = parseInt(document.getElementById('freq-slider').value);
+      intensity = parseInt(document.getElementById('int-slider').value);
+
+      const config = freqConfig[freqLevel];
+      
+      // Atualizar Textos da Interface
+      document.getElementById('freq-val-display').innerText = config.name;
+      document.getElementById('freq-val-display').style.color = config.color;
+      document.getElementById('freq-help-text').innerHTML = config.help;
+      document.getElementById('int-val-display').innerText = intensity + '%';
+
+      // Verificar se supera a Frequência de Corte
+      isEmitting = freqLevel >= CUTOFF_LEVEL;
+
+      const statusEmissao = document.getElementById('status-emissao');
+      const statusBomba = document.getElementById('status-bomba');
+
+      if (isEmitting) {
+        statusEmissao.innerText = "ATIVA (f ≥ f₀)";
+        statusEmissao.className = "text-xs font-extrabold px-2 py-1 rounded bg-emerald-100 text-emerald-700";
+
+        statusBomba.innerText = "LIGADA (Gerando Eletricidade)";
+        statusBomba.className = "text-xs font-extrabold px-2 py-1 rounded bg-ocean-100 text-ocean-700 animate-pulse";
+      } else {
+        statusEmissao.innerText = "BLOQUEADA (f < f₀)";
+        statusEmissao.className = "text-xs font-extrabold px-2 py-1 rounded bg-red-100 text-red-700";
+
+        statusBomba.innerText = "DESLIGADA";
+        statusBomba.className = "text-xs font-extrabold px-2 py-1 rounded bg-slate-200 text-slate-600";
+      }
     }
 
-    // Loop de Animação
+    // Loop de Animação Principal
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      const wavelength = parseInt(freqSlider.value);
-      const intensity = parseInt(intSlider.value);
-      
-      valWave.textContent = wavelength;
-      valInt.textContent = intensity;
+      const width = canvas.width;
+      const height = canvas.height;
 
-      // Limiar da Frequência de Corte definido em 550nm
-      const isAboveCutoff = wavelength <= 550;
+      // Desenhar Placa Solar de Silício (Metade Esquerda)
+      const panelX = width * 0.05;
+      const panelY = height * 0.45;
+      const panelW = width * 0.4;
+      const panelH = height * 0.4;
 
-      if (isAboveCutoff) {
-        statusTxt.textContent = "Ativo (Frequência > Corte)";
-        statusTxt.className = "font-bold text-green-600";
-        pumpTxt.textContent = "Ligada (Aquecendo)";
-        pumpTxt.className = "font-bold text-green-600";
-        if (poolTemp < 32.0) poolTemp += 0.006 * intensity;
-      } else {
-        statusTxt.textContent = "Inativo (Frequência Abaixo do Limiar)";
-        statusTxt.className = "font-bold text-red-600";
-        pumpTxt.textContent = "Desligada";
-        pumpTxt.className = "font-bold text-slate-500";
-        if (poolTemp > 20.0) poolTemp -= 0.003;
+      // Base do Painel
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(panelX, panelY, panelW, panelH);
+      ctx.strokeStyle = '#0284c7';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(panelX, panelY, panelW, panelH);
+
+      // Linhas da Célula de Silício
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 1;
+      for (let i = 1; i < 4; i++) {
+        ctx.beginPath();
+        ctx.moveTo(panelX + (panelW / 4) * i, panelY);
+        ctx.lineTo(panelX + (panelW / 4) * i, panelY + panelH);
+        ctx.stroke();
       }
-      tempTxt.textContent = poolTemp.toFixed(1) + " °C";
 
-      // 1. Desenhar Placa Solar de Silício
-      ctx.fillStyle = '#1e293b';
-      ctx.fillRect(50, 140, 200, 40);
-      ctx.strokeStyle = '#3b82f6';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(50, 140, 200, 40);
-      ctx.fillStyle = '#ffffff';
-      ctx.font = '12px sans-serif';
-      ctx.fillText('Placa de Silício', 110, 165);
+      // Rótulo Silício
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '11px font-sans';
+      ctx.fillText('Placa Fotovoltaica (Silício P-N)', panelX + 10, panelY + panelH - 10);
 
-      // 2. Desenhar Piscina
-      ctx.fillStyle = isAboveCutoff ? '#06b6d4' : '#0284c7';
-      ctx.fillRect(350, 100, 200, 120);
+      // Desenhar Piscina (Metade Direita)
+      const poolX = width * 0.55;
+      const poolY = height * 0.45;
+      const poolW = width * 0.4;
+      const poolH = height * 0.4;
+
+      // Corpo da Água da Piscina
+      const waterGradient = ctx.createLinearGradient(poolX, poolY, poolX, poolY + poolH);
+      if (poolTemperature > 25) {
+        waterGradient.addColorStop(0, '#06b6d4');
+        waterGradient.addColorStop(1, '#0284c7');
+      } else {
+        waterGradient.addColorStop(0, '#0284c7');
+        waterGradient.addColorStop(1, '#0c4a6e');
+      }
+      ctx.fillStyle = waterGradient;
+      ctx.fillRect(poolX, poolY, poolW, poolH);
       ctx.strokeStyle = '#38bdf8';
-      ctx.strokeRect(350, 100, 200, 120);
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 13px sans-serif';
-      ctx.fillText('Piscina (' + poolTemp.toFixed(1) + '°C)', 390, 165);
+      ctx.lineWidth = 3;
+      ctx.strokeRect(poolX, poolY, poolW, poolH);
 
-      // Gerar Fótons Incidentes
-      if (Math.random() < intensity * 0.15) {
+      // Rótulo Piscina
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 12px font-sans';
+      ctx.fillText(`Piscina: ${poolTemperature.toFixed(1)} °C`, poolX + 10, poolY + 20);
+
+      // Fios do Circuito Ligando Placa à Bomba da Piscina
+      ctx.beginPath();
+      ctx.moveTo(panelX + panelW, panelY + 20);
+      ctx.lineTo(poolX, poolY + 20);
+      ctx.strokeStyle = isEmitting ? '#f59e0b' : '#475569';
+      ctx.lineWidth = isEmitting ? 4 : 2;
+      ctx.stroke();
+
+      // Gerar novos Fótons com base na Intensidade Solar
+      if (Math.random() < (intensity / 100) * 0.4) {
         photons.push({
-          x: 50 + Math.random() * 200,
+          x: panelX + Math.random() * panelW,
           y: 0,
-          color: getWavelengthColor(wavelength)
+          speed: 3 + freqLevel,
+          color: freqConfig[freqLevel].color,
+          glow: freqConfig[freqLevel].glow
         });
       }
 
-      // Desenhar & Mover Fótons
-      photons.forEach((p, index) => {
-        p.y += 4;
+      // Atualizar e Desenhar Fótons (Bolinhas Coloridas Brilhantes)
+      for (let i = photons.length - 1; i >= 0; i--) {
+        let p = photons[i];
+        p.y += p.speed;
+
+        ctx.save();
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = p.glow;
+
+        // Núcleo do Fóton
         ctx.beginPath();
         ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
         ctx.fill();
+
+        // Borda externa viva
         ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 1.5;
         ctx.stroke();
+        ctx.restore();
 
-        // Colisão com a placa de silício
-        if (p.y >= 140) {
-          if (isAboveCutoff) {
-            electrons.push({ x: p.x, y: 140, vx: 3 + Math.random() * 2 });
+        // Colisão com o Painel de Silício
+        if (p.y >= panelY && p.y <= panelY + 15) {
+          if (isEmitting) {
+            // Efeito Fotoelétrico Ocorre: Ejeta Elétron Dourado/Vibrante!
+            electrons.push({
+              x: p.x,
+              y: panelY,
+              vx: (Math.random() - 0.5) * 3,
+              vy: - (3 + (freqLevel - CUTOFF_LEVEL) * 2),
+              color: '#ffee00'
+            });
           }
-          photons.splice(index, 1);
+          photons.splice(i, 1);
+        } else if (p.y > height) {
+          photons.splice(i, 1);
         }
-      });
+      }
 
-      // Desenhar & Mover Elétrons Ejetados
-      electrons.forEach((e, index) => {
+      // Atualizar e Desenhar Elétrons Ejetados
+      for (let i = electrons.length - 1; i >= 0; i--) {
+        let e = electrons[i];
         e.x += e.vx;
+        e.y += e.vy;
+
+        ctx.save();
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = '#ffe600';
+
+        // Esfera do Elétron
         ctx.beginPath();
         ctx.arc(e.x, e.y, 5, 0, Math.PI * 2);
-        ctx.fillStyle = '#ffee00';
+        ctx.fillStyle = e.color;
         ctx.fill();
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 1;
-        ctx.stroke();
 
-        if (e.x >= 350) {
-          electrons.splice(index, 1);
+        // Contorno visível
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.restore();
+
+        if (e.y < panelY - 90 || e.x < 0 || e.x > width) {
+          electrons.splice(i, 1);
         }
-      });
+      }
+
+      // Se o efeito fotoelétrico estiver ativo, aquecer a água da piscina gradativamente
+      if (isEmitting) {
+        if (poolTemperature < 34.0) {
+          poolTemperature += 0.005 * (freqLevel - CUTOFF_LEVEL + 1);
+        }
+
+        // Criar bolhas de água aquecida
+        if (Math.random() < 0.3) {
+          waterBubbles.push({
+            x: poolX + Math.random() * poolW,
+            y: poolY + poolH - 5,
+            radius: Math.random() * 3 + 1,
+            speed: Math.random() * 1 + 0.5
+          });
+        }
+      } else {
+        // Resfriar lentamente se desligado
+        if (poolTemperature > 20.0) {
+          poolTemperature -= 0.002;
+        }
+      }
+
+      // Desenhar Bolhas na Piscina
+      for (let i = waterBubbles.length - 1; i >= 0; i--) {
+        let b = waterBubbles[i];
+        b.y -= b.speed;
+
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+        ctx.fill();
+
+        if (b.y < poolY + 10) {
+          waterBubbles.splice(i, 1);
+        }
+      }
+
+      document.getElementById('status-temp').innerText = poolTemperature.toFixed(1) + ' °C';
 
       requestAnimationFrame(animate);
     }
 
-    // Iniciar animação do Canvas
-    animate();
+    // Inicialização ao Carregar a Página
+    window.onload = function() {
+      updateSimulation();
+      animate();
+    };
   </script>
 </body>
 </html>
